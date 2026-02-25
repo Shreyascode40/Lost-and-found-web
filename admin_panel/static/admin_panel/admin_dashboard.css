@@ -1,0 +1,366 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+/* ---- CSS Variables ---- */
+:root {
+  --primary:       #1a56a4;
+  --primary-dark:  #123d7c;
+  --primary-light: #e8f0fb;
+  --accent:        #f0a500;
+  --success:       #1e8c5a;
+  --danger:        #c0392b;
+  --bg:            #f4f7fc;
+  --surface:       #ffffff;
+  --border:        #d6e2f5;
+  --text-main:     #1a2340;
+  --text-muted:    #607295;
+  --shadow-sm:     0 2px 8px rgba(26,86,164,.08);
+  --shadow-md:     0 6px 24px rgba(26,86,164,.12);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+
+/* ---- Reset / Base ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar {
+  background: var(--surface) !important;
+  border-bottom: 2px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 0 0;
+}
+
+.navbar .container {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}
+
+.navbar-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  color: var(--primary) !important;
+  letter-spacing: .01em;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.navbar-brand i {
+  background: var(--primary);
+  color: #fff;
+  padding: .35rem .4rem;
+  border-radius: 6px;
+  font-size: .9rem;
+}
+
+/* override Bootstrap dark classes */
+.navbar-dark .navbar-nav .nav-link,
+.navbar-dark .navbar-nav .nav-link.active {
+  color: var(--text-main) !important;
+  font-weight: 600;
+  font-size: .92rem;
+  letter-spacing: .02em;
+  padding: .5rem .9rem;
+  border-radius: var(--radius-sm);
+  transition: background .2s, color .2s;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+  background: var(--primary-light);
+  color: var(--primary) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link.text-danger {
+  color: var(--danger) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link.text-danger:hover {
+  background: #fdecea;
+  color: var(--danger) !important;
+}
+
+.navbar-toggler {
+  border-color: var(--border) !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%231a56a4' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+}
+
+/* ============================================================
+   DASHBOARD WRAPPER
+   ============================================================ */
+.admin-dashboard {
+  max-width: 1100px;
+  animation: fadeUp .5s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   DASHBOARD HEADER
+   ============================================================ */
+.dashboard-header {
+  position: relative;
+  padding: 2.5rem 2rem 2rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* decorative stripe across top */
+.dashboard-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.dashboard-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+}
+
+.dashboard-title i {
+  color: var(--primary);
+  font-size: 1.6rem;
+}
+
+.dashboard-header h4.text-primary {
+  color: var(--primary) !important;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-top: .3rem;
+  letter-spacing: .03em;
+}
+
+.dashboard-header p.text-muted {
+  color: var(--text-muted) !important;
+  font-size: .9rem;
+  margin-top: .25rem;
+}
+
+/* ============================================================
+   STAT CARDS
+   ============================================================ */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.5rem 1.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform .22s, box-shadow .22s;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Lost */
+.lost-card::after  { background: #e74c3c; }
+.lost-card .stat-icon { background: #fdecea; color: #c0392b; }
+
+/* Found */
+.found-card::after { background: #1e8c5a; }
+.found-card .stat-icon { background: #e6f7ef; color: #1e8c5a; }
+
+/* Pending */
+.pending-card::after { background: var(--accent); }
+.pending-card .stat-icon { background: #fff8e6; color: #d48c00; }
+
+.stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.stat-content h5 {
+  font-size: .82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  margin-bottom: .2rem;
+}
+
+.stat-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+/* ============================================================
+   CLAIMS SECTION
+   ============================================================ */
+.claims-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--primary-light);
+}
+
+.section-title i {
+  color: var(--primary);
+}
+
+/* ---- Individual Claim Card ---- */
+.claim-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  overflow: hidden;
+  transition: box-shadow .2s;
+  animation: fadeUp .4s ease both;
+}
+
+.claim-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.claim-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--primary-light);
+  padding: .75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.claim-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin: 0;
+}
+
+.claim-badge {
+  background: var(--accent);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: .25rem .65rem;
+  border-radius: 20px;
+}
+
+.claim-body {
+  padding: 1.1rem 1.25rem;
+}
+
+.claim-body p {
+  margin-bottom: .5rem;
+  font-size: .93rem;
+  color: var(--text-main);
+}
+
+.claim-body p strong {
+  color: var(--primary);
+  margin-right: .3rem;
+}
+
+/* ---- Action Buttons ---- */
+.claim-body .btn {
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: .45rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  transition: filter .2s, transform .15s;
+  margin-top: .5rem;
+  margin-right: .4rem;
+}
+
+.btn-success {
+  background: var(--success);
+  color: #fff !important;
+}
+
+.btn-success:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff !important;
+}
+
+.btn-danger:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+/* ---- Empty state ---- */
+.claims-section > p {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem 0;
+  font-size: .95rem;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 767px) {
+  .stat-card { padding: 1.1rem 1.2rem; }
+  .dashboard-header { padding: 1.75rem 1rem 1.25rem; }
+  .claims-section { padding: 1.25rem 1rem; }
+}

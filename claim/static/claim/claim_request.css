@@ -1,0 +1,288 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+/* ---- CSS Variables (same as dashboard) ---- */
+:root {
+  --primary:       #1a56a4;
+  --primary-dark:  #123d7c;
+  --primary-light: #e8f0fb;
+  --accent:        #f0a500;
+  --success:       #1e8c5a;
+  --danger:        #c0392b;
+  --bg:            #f4f7fc;
+  --surface:       #ffffff;
+  --border:        #d6e2f5;
+  --text-main:     #1a2340;
+  --text-muted:    #607295;
+  --shadow-sm:     0 2px 8px rgba(26,86,164,.08);
+  --shadow-md:     0 6px 24px rgba(26,86,164,.12);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+
+/* ---- Reset / Base ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar {
+  background: var(--surface) !important;
+  border-bottom: 2px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 0;
+}
+
+.navbar .container {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+/* Back link styled as brand */
+.navbar-brand {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--primary) !important;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .45rem .85rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: background .2s, border-color .2s;
+  text-decoration: none;
+}
+
+.navbar-brand:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.navbar-brand i {
+  font-size: .85rem;
+}
+
+/* Institution name */
+.navbar-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  color: var(--text-main) !important;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+/* Logout button */
+.navbar .btn-danger {
+  background: var(--danger);
+  border: none;
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: .42rem 1.1rem;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  transition: filter .2s, transform .15s;
+}
+
+.navbar .btn-danger:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   PAGE TITLE
+   ============================================================ */
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+}
+
+.page-title i {
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
+/* ============================================================
+   CLAIM CARDS
+   ============================================================ */
+.claim-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform .22s, box-shadow .22s;
+  animation: fadeUp .45s ease both;
+}
+
+.claim-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Coloured top stripe based on status */
+.claim-card.status-pending  { border-top: 4px solid var(--accent); }
+.claim-card.status-accepted { border-top: 4px solid var(--success); }
+.claim-card.status-rejected { border-top: 4px solid var(--danger); }
+
+.card-body {
+  padding: 1.5rem 1.75rem;
+}
+
+/* Item title */
+.claim-item-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--primary-dark);
+  margin-bottom: .75rem;
+}
+
+/* Detail rows */
+.claim-detail {
+  font-size: .93rem;
+  color: var(--text-main);
+  margin-bottom: .4rem;
+}
+
+.claim-detail strong {
+  color: var(--primary);
+  margin-right: .3rem;
+  min-width: 90px;
+  display: inline-block;
+}
+
+/* ---- Status Badges ---- */
+.badge {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: .3rem .75rem;
+  border-radius: 20px;
+}
+
+.badge.bg-warning {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+.badge.bg-success {
+  background: var(--success) !important;
+  color: #fff !important;
+}
+
+.badge.bg-danger {
+  background: var(--danger) !important;
+  color: #fff !important;
+}
+
+/* ---- Claim Image ---- */
+.claim-image-wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.claim-image-wrap img {
+  width: 100%;
+  max-width: 220px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  object-fit: cover;
+  aspect-ratio: 4/3;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---- Action Buttons ---- */
+.claim-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--primary-light);
+}
+
+.claim-actions .btn {
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: .45rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  transition: filter .2s, transform .15s;
+}
+
+.btn-success {
+  background: var(--success);
+  color: #fff !important;
+}
+
+.btn-success:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff !important;
+}
+
+.btn-danger:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+/* ---- Empty State ---- */
+.empty-state {
+  text-align: center;
+  padding: 3.5rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.empty-state i {
+  font-size: 2.5rem;
+  color: var(--border);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 767px) {
+  .card-body { padding: 1.1rem 1rem; }
+  .claim-image-wrap { margin-top: 1rem; justify-content: flex-start; }
+  .navbar-text { display: none; }
+}

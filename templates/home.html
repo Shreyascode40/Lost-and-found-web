@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Lost Items{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <!-- Page Heading -->
+    <h2 class="page-heading">
+        Lost Items - {{ request.user.institution.name }}
+    </h2>
+    
+    <!-- Search Bar -->
+    <form method="GET" class="search-form">
+        <div class="search-wrapper">
+            <input type="text" 
+                   name="q" 
+                   placeholder="Search lost items... (Press '/' to focus)" 
+                   value="{{ request.GET.q }}"
+                   class="search-input">
+            <button type="submit" class="search-button">
+                Search
+            </button>
+        </div>
+    </form>
+    
+    <hr class="divider">
+    
+    <!-- Items Grid -->
+    <div class="items-grid">
+        {% for item in items %}
+        <div class="item-card" data-item-id="{{ item.id }}">
+            <!-- Item Image -->
+            <div class="image-wrapper">
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" 
+                         alt="{{ item.title }}"
+                         class="item-image"
+                         loading="lazy">
+                {% else %}
+                    <img src="{% static 'images/no-image.png' %}" 
+                         alt="No image available"
+                         class="item-image"
+                         loading="lazy">
+                {% endif %}
+            </div>
+            
+            <!-- Item Details -->
+            <div class="item-content">
+                <h3 class="item-title">{{ item.title }}</h3>
+                <p class="item-description">
+                    {{ item.description|truncatewords:20 }}
+                </p>
+                
+                <div class="item-meta">
+                    <p class="meta-item">
+                        <span class="icon">📍</span>
+                        <strong>Location:</strong> {{ item.location }}
+                    </p>
+                    <p class="meta-item">
+                        <span class="icon">📅</span>
+                        <strong>Date:</strong> {{ item.date }}
+                    </p>
+                    <p class="meta-item">
+                        <span class="icon">👤</span>
+                        <strong>Posted by:</strong> {{ item.user.username }}
+                    </p>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="{% url 'items:item_detail' item.id %}" 
+                       class="btn btn-primary">
+                        View Details
+                    </a>
+                    {% if not request.user.is_admin and item.user != request.user %}
+                    <a href="{% url 'claim:create_claim' item.id %}" 
+                       class="btn btn-success claim-btn"
+                       data-item-title="{{ item.title }}">
+                        Claim
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div class="empty-state">
+                <div class="empty-icon">🔍</div>
+                <p class="empty-message">No lost items found in your institution.</p>
+                {% if request.GET.q %}
+                <p class="empty-suggestion">Try adjusting your search terms</p>
+                <a href="{% url 'items:lost_items' %}" class="btn btn-primary">Clear Search</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if items.has_other_pages %}
+        <div class="pagination-wrapper">
+            {% if items.has_previous %}
+                <a href="?page={{ items.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                   class="pagination-link">
+                    ← Previous
+                </a>
+            {% endif %}
+            
+            <span class="pagination-info">
+                Page {{ items.number }} of {{ items.paginator.num_pages }}
+            </span>
+            
+            {% if items.has_next %}
+                <a href="?page={{ items.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                   class="pagination-link">
+                    Next →
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/lost_items.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}My Claims{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2>Claim Requests for Your Items</h2>
+    <hr>
+
+    {% for claim in claims %}
+
+        <div style="border:1px solid #ddd; padding:15px; border-radius:10px; margin-bottom:20px;">
+
+            <h4>Item: {{ claim.item.title }}</h4>
+
+            <p><strong>Claimed By:</strong> {{ claim.claimant.username }}</p>
+
+            <p><strong>Message:</strong></p>
+            <p style="background:#f8f8f8; padding:10px; border-radius:6px;">
+                {{ claim.message }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                {% if claim.status == "Pending" %}
+                    <span style="color:orange;">Pending</span>
+                {% elif claim.status == "Accepted" %}
+                    <span style="color:green;">Accepted</span>
+                {% else %}
+                    <span style="color:red;">Rejected</span>
+                {% endif %}
+            </p>
+
+            {% if claim.status == "Pending" %}
+                <a href="{% url 'accept_claim' claim.id %}"
+                   style="padding:6px 12px; background:green; color:white; text-decoration:none; border-radius:6px;">
+                    Accept
+                </a>
+
+                <a href="{% url 'reject_claim' claim.id %}"
+                   style="padding:6px 12px; background:red; color:white; text-decoration:none; border-radius:6px;">
+                    Reject
+                </a>
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+        <p>No claim requests yet.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
