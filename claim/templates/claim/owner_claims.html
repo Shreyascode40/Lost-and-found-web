@@ -34,12 +34,12 @@
             </p>
 
             {% if claim.status == "Pending" %}
-                <a href="{% url 'accept_claim' claim.id %}"
+                <a href="{% url 'claim:accept_claim' claim.id %}"
                    style="padding:6px 12px; background:green; color:white; text-decoration:none; border-radius:6px;">
                     Accept
                 </a>
 
-                <a href="{% url 'reject_claim' claim.id %}"
+                <a href="{% url 'claim:reject_claim' claim.id %}"
                    style="padding:6px 12px; background:red; color:white; text-decoration:none; border-radius:6px;">
                     Reject
                 </a>

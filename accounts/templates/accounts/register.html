@@ -1,65 +1,91 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Register</title>
-    <link rel="stylesheet" href="{% static 'accounts/css/register.css' %}">
-</head>
-<body>
+{% block title %}Register - Lost & Found{% endblock %}
 
-<h2>Register</h2>
-
-{% if error %}
-<p style="color:red;">{{ error }}</p>
-{% endif %}
-
-<form method="POST">
-
-    
-    {% csrf_token %}
-
-    <label>Username:</label>
-    <input type="text" name="username" required>
-    <br><br>
-
-    <label>Password:</label>
-    <input type="password" name="password" required>
-    <br><br>
-
-    <label>Confirm Password:</label>
-    <input type="password" name="confirm_password" required>
-    <br><br>
-
-    <!-- Institution Selection -->
-    <label>Select Institution:</label>
-    <select name="institution" required>
-    <option value="">-- Select School/College --</option>
-
-    {% for inst in institutions %}
-        <option value="{{ inst.id }}"
-        {% if request.POST.institution == inst.id|stringformat:"s" %}
-            selected
-        {% endif %}
-        >
-            {{ inst.name }}
-        </option>
-    {% endfor %}
-
-</select>
-<br><br>
-
-    <!--  Institution Join Password -->
-    <label>Institution Password:</label>
-    <input type="password" name="join_password" required>
-    <br><br>
-
-    <button type="submit">Register</button>
-</form>
-
-<p>Already have an account? 
-    <a href="{% url 'accounts:login' %}">Login</a>
-</p>
-
-</body>
-</html>
-
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <img src="{% static 'istockphoto-1730149969-612x612.jpg' %}" alt="Logo">
+                </div>
+                <h1>Create Account</h1>
+                <p>Join your institution's Lost & Found</p>
+            </div>
+            
+            {% if error %}
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+            </div>
+            {% endif %}
+            
+            <form method="POST" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> Username
+                    </label>
+                    <input type="text" id="username" name="username" placeholder="Choose a username" value="{{ request.POST.username|default:'' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <input type="password" id="password" name="password" placeholder="Create password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm_password">
+                        <i class="fas fa-lock"></i> Confirm Password
+                    </label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="institution">
+                        <i class="fas fa-university"></i> Institution
+                    </label>
+                    <select id="institution" name="institution" required>
+                        <option value="">Select your institution</option>
+                        {% for inst in institutions %}
+                            <option value="{{ inst.id }}" {% if request.POST.institution == inst.id|stringformat:"s" %}selected{% endif %}>
+                                {{ inst.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="join_password">
+                        <i class="fas fa-key"></i> Institution Password
+                    </label>
+                    <input type="password" id="join_password" name="join_password" placeholder="Enter institution password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></p>
+            </div>
+        </div>
+        
+        <div class="auth-illustration">
+            <div class="illustration-content">
+                <div class="floating-cards">
+                    <div class="float-card card-1">🎓</div>
+                    <div class="float-card card-2">🏫</div>
+                    <div class="float-card card-3">📱</div>
+                </div>
+                <h2>Join Your Campus</h2>
+                <p>Connect with students and staff to report and find lost items.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -9,7 +9,7 @@
         <h1 class="page-heading">
             <i class="fas fa-search"></i> Lost Items
         </h1>
-        <p class="page-subtitle">{{ request.user.institution.name|default:"All Items" }}</p>
+        <p class="page-subtitle">Browse all lost items in your institution</p>
     </div>
     
     <form method="GET" class="search-form">
@@ -26,7 +26,7 @@
     
     <div class="items-grid">
         {% for item in items %}
-        <div class="item-card" data-item-id="{{ item.id }}">
+        <div class="item-card">
             <div class="image-wrapper">
                 {% if item.image %}
                     <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
@@ -62,11 +62,6 @@
                     <a href="{% url 'items:item_detail' item.id %}" class="btn btn-primary">
                         <i class="fas fa-eye"></i> View
                     </a>
-                    {% if item.user != request.user %}
-                    <a href="{% url 'claim:create_claim' item.id %}" class="btn btn-success">
-                        <i class="fas fa-hand-holding-heart"></i> Claim
-                    </a>
-                    {% endif %}
                 </div>
             </div>
         </div>
@@ -74,14 +69,9 @@
         <div class="empty-state" style="grid-column: 1 / -1;">
             <div class="empty-icon">🔍</div>
             <p class="empty-message">No lost items found</p>
-            <p class="empty-suggestion">Try adjusting your search terms</p>
         </div>
         {% endfor %}
     </div>
 </div>
 
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

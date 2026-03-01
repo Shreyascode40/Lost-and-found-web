@@ -8,6 +8,13 @@ from items.models import Item
 
 
 @login_required
+def claim_list(request):
+    claims = Claim.objects.filter(claimant=request.user).order_by('-created_at')
+    return render(request, "claim/claim_list.html", {
+        "claims": claims
+    })
+
+@login_required
 def create_claim(request, item_id):
     item = get_object_or_404(Item, id=item_id)
 

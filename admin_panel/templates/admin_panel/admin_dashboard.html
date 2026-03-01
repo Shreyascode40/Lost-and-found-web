@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard</title>
+  <title>Admin Dashboard - Lost & Found</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg: #0f0f13;
       --surface: #17171f;
+      --surface-hover: #1f1f2a;
       --border: #2a2a38;
       --accent: #7c6dfa;
       --accent2: #f7a046;
@@ -20,54 +22,56 @@
       --text: #e8e8f0;
       --muted: #6b6b80;
       --danger: #ff6b6b;
+      --success: #10b981;
     }
 
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--bg);
       color: var(--text);
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
       display: flex;
     }
 
-    /* NAV */
     nav {
-      width: 220px;
-      height: 100vh;
+      width: 240px;
       background: var(--surface);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      padding: 2rem 1.2rem;
-      flex-shrink: 0;
+      padding: 1.5rem 1rem;
       position: sticky;
       top: 0;
-      overflow-y: auto;
+      height: 100vh;
     }
 
     nav .logo {
       font-family: 'Syne', sans-serif;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 800;
-      letter-spacing: -0.03em;
       color: var(--accent);
-      margin-bottom: 2.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+      padding: 0 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    nav ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
+    nav .logo i {
+      font-size: 1.2rem;
+    }
+
+    nav ul { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; flex: 1; }
 
     nav ul li a {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      padding: 0.7rem 1rem;
-      border-radius: 8px;
+      gap: 0.8rem;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
       color: var(--muted);
       text-decoration: none;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
       font-weight: 500;
       transition: all 0.2s;
     }
@@ -82,19 +86,25 @@
       color: var(--accent);
     }
 
+    nav ul li i {
+      width: 20px;
+      text-align: center;
+    }
+
     nav ul li.logout { margin-top: auto; }
     nav ul li.logout a { color: var(--danger); }
     nav ul li.logout a:hover { background: rgba(255, 107, 107, 0.12); }
 
-    /* MAIN */
     #main {
       flex: 1;
-      height: 100vh;
-      padding: 2.5rem;
+      padding: 2rem;
       overflow-y: auto;
     }
 
     .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 2rem;
     }
 
@@ -102,20 +112,57 @@
       font-family: 'Syne', sans-serif;
       font-size: 1.8rem;
       font-weight: 800;
-      letter-spacing: -0.03em;
     }
 
     .page-header p {
       color: var(--muted);
-      font-size: 0.875rem;
+      font-size: 0.9rem;
       margin-top: 0.3rem;
     }
 
-    /* STAT CARDS */
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      border: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+;
+    }
+
+    .btn-primary:hover      color: white {
+      background: #6a5cf0;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
       margin-bottom: 2rem;
     }
 
@@ -136,12 +183,13 @@
       border-radius: 14px 14px 0 0;
     }
 
-    #total::before   { background: var(--accent); }
-    #claimed::before { background: var(--accent3); }
+    #total::before { background: var(--accent); }
+    #found::before { background: var(--accent3); }
     #pending::before { background: var(--accent2); }
+    #claimed::before { background: var(--success); }
 
     .dashboard h3 {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 500;
       color: var(--muted);
       text-transform: uppercase;
@@ -151,46 +199,118 @@
 
     .dashboard h2 {
       font-family: 'DM Mono', monospace;
-      font-size: 2.8rem;
+      font-size: 2.2rem;
       font-weight: 500;
       line-height: 1;
     }
 
-    #total h2   { color: var(--accent); }
-    #claimed h2 { color: var(--accent3); }
+    #total h2 { color: var(--accent); }
+    #found h2 { color: var(--accent3); }
     #pending h2 { color: var(--accent2); }
+    #claimed h2 { color: var(--success); }
 
-    /* GRAPH */
-    .graph {
+    .charts-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .chart-card, .recent-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 1.8rem;
+      padding: 1.5rem;
     }
 
-    .graph-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .graph-header h2 {
+    .chart-card h2, .recent-card h2 {
       font-family: 'Syne', sans-serif;
       font-size: 1.1rem;
       font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 250px;
+    }
+
+    .claims-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .claim-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .claim-item .item-icon {
+      width: 45px;
+      height: 45px;
+      background: rgba(124, 109, 250, 0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .claim-item .claim-info {
+      flex: 1;
+    }
+
+    .claim-item .claim-info h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .claim-item .claim-info p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .claim-item .claim-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .claim-item .btn {
+      padding: 0.5rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    .empty-claims {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+    }
+
+    .empty-claims i {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
     }
 
     .legend {
       display: flex;
       gap: 1rem;
+      margin-bottom: 1rem;
     }
 
     .legend-item {
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       color: var(--muted);
     }
 
@@ -199,27 +319,14 @@
       border-radius: 50%;
     }
 
-    .chart-container {
-      position: relative;
-      height: 280px;
+    @media (max-width: 1100px) {
+      .dashboard { grid-template-columns: repeat(2, 1fr); }
+      .charts-row { grid-template-columns: 1fr; }
     }
 
-    @media (max-width: 900px) {
-      body {
-        flex-direction: column;
-        height: auto;
-        overflow: auto;
-      }
-      nav {
-        width: 100%;
-        height: auto;
-        position: relative;
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 1rem;
-      }
-      nav ul { flex-direction: row; flex-wrap: wrap; }
-      #main { height: auto; overflow-y: visible; }
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      nav { width: 100%; height: auto; position: relative; }
       .dashboard { grid-template-columns: 1fr; }
     }
   </style>
@@ -227,42 +334,43 @@
 <body>
 
   <nav>
-    <div class="logo">⬡ Vaultex</div>
+    <div class="logo">
+      <i class="fas fa-box-open"></i> Lost & Found
+    </div>
     <ul>
       <li class="active">
         <a href="#">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          Dashboard
+          <i class="fas fa-th-large"></i> Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="/add/">
+          <i class="fas fa-plus-circle"></i> Add Item
+        </a>
+      </li>
+      <li>
+        <a href="/">
+          <i class="fas fa-search"></i> View All Items
+        </a>
+      </li>
+      <li>
+        <a href="/claim/list/">
+          <i class="fas fa-clipboard-list"></i> All Claims
         </a>
       </li>
       <li>
         <a href="#">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Claims
+          <i class="fas fa-users"></i> Users
         </a>
       </li>
       <li>
         <a href="#">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          Payouts
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          Users
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-          Settings
+          <i class="fas fa-cog"></i> Settings
         </a>
       </li>
       <li class="logout">
-        <a href="#">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Logout
+        <a href="/accounts/logout/">
+          <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
     </ul>
@@ -270,72 +378,107 @@
 
   <div id="main">
     <div class="page-header">
-      <h1>Overview</h1>
-      <p>Welcome back — here's what's happening today.</p>
+      <div>
+        <h1>Dashboard</h1>
+        <p>Welcome back — here's what's happening today.</p>
+      </div>
+      <div class="header-actions">
+        <a href="/add/" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Add Item
+        </a>
+      </div>
     </div>
 
     <div class="dashboard">
       <div id="total">
-        <h3>Total Rewards</h3>
-        <h2>$84,210</h2>
+        <h3><i class="fas fa-box"></i> Total Lost</h3>
+        <h2>{{ total_lost|default:0 }}</h2>
       </div>
-      <div id="claimed">
-        <h3>Claimed</h3>
-        <h2>$61,430</h2>
+      <div id="found">
+        <h3><i class="fas fa-hand-holding-heart"></i> Total Found</h3>
+        <h2>{{ total_found|default:0 }}</h2>
       </div>
       <div id="pending">
-        <h3>Pending</h3>
-        <h2>$22,780</h2>
+        <h3><i class="fas fa-clock"></i> Pending Claims</h3>
+        <h2>{{ pending_claims|default:0 }}</h2>
+      </div>
+      <div id="claimed">
+        <h3><i class="fas fa-check-circle"></i> Resolved</h3>
+        <h2>{{ resolved_claims|default:0 }}</h2>
       </div>
     </div>
 
-    <div class="graph">
-      <div class="graph-header">
-        <h2>Rewards Over Time</h2>
+    <div class="charts-row">
+      <div class="chart-card">
+        <h2>Items Overview</h2>
         <div class="legend">
           <div class="legend-item">
-            <div class="legend-dot" style="background: #7c6dfa;"></div>
-            Total
+            <div class="legend-dot" style="background: #7c6dfa;"></div> Lost
           </div>
           <div class="legend-item">
-            <div class="legend-dot" style="background: #4ecdc4;"></div>
-            Claimed
-          </div>
-          <div class="legend-item">
-            <div class="legend-dot" style="background: #f7a046;"></div>
-            Pending
+            <div class="legend-dot" style="background: #4ecdc4;"></div> Found
           </div>
         </div>
+        <div class="chart-container">
+          <canvas id="itemsChart"></canvas>
+        </div>
       </div>
-      <div class="chart-container">
-        <canvas id="rewardsChart"></canvas>
+
+      <div class="recent-card">
+        <h2>Pending Claims</h2>
+        <div class="claims-list">
+          {% if claims %}
+            {% for claim in claims %}
+            <div class="claim-item">
+              <div class="item-icon">📦</div>
+              <div class="claim-info">
+                <h4>{{ claim.item.title }}</h4>
+                <p>By {{ claim.claimant.username }} • {{ claim.created_at|timesince }} ago</p>
+              </div>
+              <div class="claim-actions">
+                <form method="post" action="{% url 'claim:accept_claim' claim.id %}" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-success">
+                    <i class="fas fa-check"></i>
+                  </button>
+                </form>
+                <form method="post" action="{% url 'claim:reject_claim' claim.id %}" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="empty-claims">
+              <i class="fas fa-inbox"></i>
+              No pending claims
+            </div>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    const ctx = document.getElementById('rewardsChart').getContext('2d');
+    const ctx = document.getElementById('itemsChart').getContext('2d');
     new Chart(ctx, {
       type: 'bar',
       data: {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
         datasets: [
           {
-            label: 'Total',
-            data: [9200, 11400, 10800, 13500, 12100, 14700, 8900, 10200],
+            label: 'Lost',
+            data: [12, 19, 15, 25, 22, 18, 15, 20],
             backgroundColor: 'rgba(124, 109, 250, 0.7)',
             borderRadius: 6,
           },
           {
-            label: 'Claimed',
-            data: [6800, 8200, 7900, 9800, 8700, 10900, 6100, 7500],
+            label: 'Found',
+            data: [8, 12, 10, 18, 15, 14, 12, 16],
             backgroundColor: 'rgba(78, 205, 196, 0.7)',
-            borderRadius: 6,
-          },
-          {
-            label: 'Pending',
-            data: [2400, 3200, 2900, 3700, 3400, 3800, 2800, 2700],
-            backgroundColor: 'rgba(247, 160, 70, 0.7)',
             borderRadius: 6,
           }
         ]
@@ -351,11 +494,7 @@
           },
           y: {
             grid: { color: 'rgba(42,42,56,0.8)' },
-            ticks: {
-              color: '#6b6b80',
-              font: { family: 'DM Mono', size: 11 },
-              callback: v => '$' + (v/1000).toFixed(0) + 'k'
-            }
+            ticks: { color: '#6b6b80', font: { family: 'DM Mono', size: 11 } }
           }
         }
       }

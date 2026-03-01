@@ -1,263 +1,44 @@
+{% load static %}
 <nav class="navbar">
     <div class="navbar-container">
-        <!-- Left Side - Logo and Main Links -->
+        <a href="{% if user.is_authenticated %}{% url 'items:home' %}{% else %}{% url 'accounts:login' %}{% endif %}" class="navbar-brand">
+            <img src="{% static 'istockphoto-1730149969-612x612.jpg' %}" alt="Logo" class="navbar-logo">
+            Lost & Found
+        </a>
+        
         <div class="navbar-left">
-            <a href="#" class="navbar-brand">
-                <img src="static\istockphoto-1730149969-612x612.jpg" alt="Lost & Found Logo" class="navbar-logo">
-                <span class="brand-text">Lost & Found</span>
-            </a>
-            
             {% if user.is_authenticated %}
-                
-                </div>
+                <a href="{% url 'items:home' %}" class="navbar-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{% url 'items:add_item' %}" class="navbar-link navbar-link--primary">
+                    <i class="fas fa-plus"></i> Add Item
+                </a>
+                <a href="{% url 'claim:claim_list' %}" class="navbar-link">
+                    <i class="fas fa-clipboard-list"></i> My Claims
+                </a>
             {% endif %}
         </div>
-
-        <!-- Right Side - User Info and Auth Links -->
+        
         <div class="navbar-right">
             {% if user.is_authenticated %}
                 <span class="navbar-username">
-                    <span class="user-icon">👤</span> {{ user.username }}
+                    <i class="fas fa-user"></i> {{ user.username }}
                 </span>
-                <a href="{% url 'accounts:logout' %}" class="navbar-link navbar-link--logout">
-                    Logout
+                <a href="{% url 'admin_panel:admin_dashboard' %}" class="navbar-link">
+                    <i class="fas fa-cog"></i> Admin
                 </a>
-                <a href="{% url 'admin_panel:admin_login' %}" class="navbar-link navbar-link--admin-login">
-                    Admin Login
+                <a href="{% url 'accounts:logout' %}" class="navbar-link navbar-link--danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             {% else %}
-                <a href="{% url 'accounts:login' %}" class="navbar-link navbar-link--login">Login</a>
-                <a href="{% url 'accounts:register' %}" class="navbar-link navbar-link--register">Register</a>
+                <a href="{% url 'accounts:login' %}" class="navbar-link">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                <a href="{% url 'accounts:register' %}" class="navbar-link navbar-link--primary">
+                    <i class="fas fa-user-plus"></i> Register
+                </a>
             {% endif %}
         </div>
     </div>
 </nav>
-
-<style>
-    /* ===========================
-   Navigation Bar - Professional Black & White Theme
-   =========================== */
-.navbar {
-    background-color: #2c3e50;
-    padding: 12px 24px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-    border-bottom: 3px solid #34495e;
-}
-
-.navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-/* ===========================
-   Left Side - Logo and Main Links
-   =========================== */
-.navbar-left {
-    display: flex;
-    align-items: center;
-    gap: 35px;
-}
-
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    transition: transform 0.3s ease;
-}
-
-.navbar-brand:hover {
-    transform: scale(1.02);
-}
-
-.navbar-logo {
-    width: 45px;
-    height: 45px;
-    object-fit: contain;
-    transition: filter 0.3s ease;
-}
-
-.navbar-brand:hover .navbar-logo {
-    filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
-}
-
-.brand-text {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-}
-
-.navbar-main-links {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* ===========================
-   Right Side - User and Auth
-   =========================== */
-.navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* ===========================
-   Username Display
-   =========================== */
-.navbar-username {
-    color: white;
-    font-weight: 600;
-    padding: 10px 18px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.user-icon {
-    font-size: 1.1rem;
-}
-
-/* ===========================
-   Navigation Links
-   =========================== */
-.navbar-link {
-    color: white;
-    text-decoration: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    font-size: 0.95rem;
-    border: 2px solid transparent;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.navbar-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-}
-
-.link-icon {
-    font-size: 1rem;
-}
-
-/* ===========================
-   Auth Links Styling
-   =========================== */
-.navbar-link--login {
-    border: 2px solid rgba(255, 255, 255, 0.4);
-}
-
-.navbar-link--login:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.6);
-}
-
-.navbar-link--register {
-    background-color: #3498db;
-    color: white;
-    font-weight: 600;
-    border: 2px solid #3498db;
-}
-
-.navbar-link--register:hover {
-    background-color: #2980b9;
-    border-color: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
-}
-
-/* ===========================
-   Logout Link
-   =========================== */
-.navbar-link--logout {
-    background-color: rgba(231, 76, 60, 0.2);
-    border: 2px solid rgba(231, 76, 60, 0.5);
-    color: #fff;
-}
-
-.navbar-link--logout:hover {
-    background-color: #e74c3c;
-    border-color: #e74c3c;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
-}
-
-/* ===========================
-   Responsive Design
-   =========================== */
-@media (max-width: 1024px) {
-    .navbar-left {
-        gap: 20px;
-    }
-    
-    .brand-text {
-        font-size: 1.3rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .navbar {
-        padding: 10px 16px;
-    }
-    
-    .navbar-container {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .navbar-left,
-    .navbar-right {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .navbar-left {
-        flex-direction: column;
-        gap: 12px;
-    }
-    
-    .navbar-main-links {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 6px;
-    }
-    
-    .navbar-logo {
-        width: 38px;
-        height: 38px;
-    }
-}
-
-@media (max-width: 480px) {
-    .brand-text {
-        font-size: 1.1rem;
-    }
-    
-    .navbar-link,
-    .navbar-username {
-        font-size: 0.85rem;
-        padding: 8px 14px;
-    }
-    
-    .navbar-logo {
-        width: 35px;
-        height: 35px;
-    }
-    
-    .link-icon {
-        display: none;
-    }
-}
-</style>

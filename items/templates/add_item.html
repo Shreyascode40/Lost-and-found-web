@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Add Item - Lost & Found{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-card">
+        <div class="page-header" style="padding: 0 0 1.5rem 0; text-align: left;">
+            <h1 class="page-heading" style="font-size: 1.5rem;">
+                <i class="fas fa-plus-circle"></i> Report an Item
+            </h1>
+            <p class="page-subtitle">Found something? Lost something? Report it here.</p>
+        </div>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="title">
+                    <i class="fas fa-heading"></i> Item Title
+                </label>
+                <input type="text" id="title" name="title" placeholder="e.g., Blue Backpack with Laptop Stickers" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">
+                    <i class="fas fa-align-left"></i> Description
+                </label>
+                <textarea id="description" name="description" rows="4" placeholder="Describe the item in detail (color, brand, distinguishing features, etc.)" required></textarea>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="item_type">
+                        <i class="fas fa-tag"></i> Type
+                    </label>
+                    <select id="item_type" name="item_type" required>
+                        <option value="Lost">Lost</option>
+                        <option value="Found">Found</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">
+                        <i class="fas fa-folder"></i> Category
+                    </label>
+                    <select id="category" name="category">
+                        <option value="">Select Category</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Books">Books & Stationery</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Keys">Keys & Wallet</option>
+                        <option value="Sports">Sports Equipment</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="location">
+                        <i class="fas fa-map-marker-alt"></i> Location
+                    </label>
+                    <input type="text" id="location" name="location" placeholder="e.g., Library 2nd Floor" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="date">
+                        <i class="fas fa-calendar"></i> Date
+                    </label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="image">
+                    <i class="fas fa-camera"></i> Photo (Optional)
+                </label>
+                <input type="file" id="image" name="image" accept="image/*" style="padding: 10px;">
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">
+                    <i class="fas fa-plus-circle"></i> Submit Report
+                </button>
+                <a href="{% url 'items:home' %}" class="btn" style="flex: 1; background: var(--surface); border: 2px solid var(--border);">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dateInput = document.getElementById('date');
+    dateInput.valueAsDate = new Date();
+});
+</script>
+{% endblock %}

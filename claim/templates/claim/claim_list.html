@@ -1,132 +1,55 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}Claim Requests{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'admin_panel/claim_requests.css' %}">
-{% endblock %}
+{% block title %}My Claims - Lost & Found{% endblock %}
 
 {% block content %}
-
-<!-- ================= NAVBAR ================= -->
-<nav class="navbar shadow-sm">
-  <div class="container">
-
-    <!-- Back to Dashboard -->
-    <a class="navbar-brand" href="{% url 'admin_dashboard' %}">
-      <i class="fas fa-arrow-left"></i>
-      Back to Dashboard
-    </a>
-
-    <!-- Institution Name -->
-    <span class="navbar-text">
-      {{ request.user.institution.name }}
-    </span>
-
-    <!-- Logout -->
-    <a href="{% url 'logout' %}" class="btn btn-danger">
-      <i class="fas fa-sign-out-alt me-1"></i> Logout
-    </a>
-
-  </div>
-</nav>
-
-
-<!-- ================= CLAIM LIST ================= -->
-<div class="container mt-4 mb-5">
-
-  <h2 class="page-title mb-4">
-    <i class="fas fa-tasks"></i>
-    Claim Requests
-  </h2>
-
-  {% for claim in claims %}
-
-  <!-- Dynamically add status class for top border colour -->
-  <div class="claim-card mb-3
-    {% if claim.status == 'Pending' %}status-pending
-    {% elif claim.status == 'Accepted' %}status-accepted
-    {% else %}status-rejected{% endif %}">
-
-    <div class="card-body">
-      <div class="row">
-
-        <!-- ---- Left: Details ---- -->
-        <div class="col-md-8">
-
-          <h5 class="claim-item-title">
-            <i class="fas fa-box me-2" style="color:var(--primary);"></i>
-            {{ claim.item.title }}
-          </h5>
-
-          <p class="claim-detail">
-            <strong>Claimed By:</strong> {{ claim.claimant.username }}
-          </p>
-
-          <p class="claim-detail">
-            <strong>Branch:</strong> {{ claim.claimant.branch }}
-          </p>
-
-          <p class="claim-detail">
-            <strong>Message:</strong> {{ claim.message }}
-          </p>
-
-          <p class="claim-detail">
-            <strong>Status:</strong>
-            {% if claim.status == "Pending" %}
-              <span class="badge bg-warning">Pending</span>
-            {% elif claim.status == "Accepted" %}
-              <span class="badge bg-success">Accepted</span>
-            {% else %}
-              <span class="badge bg-danger">Rejected</span>
-            {% endif %}
-          </p>
-
-          <!-- Action Buttons (show only if pending) -->
-          {% if claim.status == "Pending" %}
-          <div class="claim-actions">
-
-            <form method="post" action="{% url 'claim:accept_claim' claim.id %}" style="display:inline;">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-success">
-                <i class="fas fa-check me-1"></i> Accept
-              </button>
-            </form>
-
-            <form method="post" action="{% url 'claim:reject_claim' claim.id %}" style="display:inline;">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-danger">
-                <i class="fas fa-times me-1"></i> Reject
-              </button>
-            </form>
-
-          </div>
-          {% endif %}
-
-        </div><!-- /col-md-8 -->
-
-        <!-- ---- Right: Item Image ---- -->
-        {% if claim.item.image %}
-        <div class="col-md-4 claim-image-wrap">
-          <img src="{{ claim.item.image.url }}" alt="{{ claim.item.title }}">
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-heading">
+            <i class="fas fa-clipboard-list"></i> My Claims
+        </h1>
+        <p class="page-subtitle">Track the status of your item claims</p>
+    </div>
+    
+    {% if claims %}
+    <div class="claims-grid">
+        {% for claim in claims %}
+        <div class="claim-card status-{{ claim.status|lower }}">
+            <div class="claim-header">
+                <span class="claim-status status-{{ claim.status|lower }}">
+                    {{ claim.status }}
+                </span>
+                <span class="claim-date">
+                    {{ claim.created_at|date:"M d, Y" }}
+                </span>
+            </div>
+            
+            <h3 class="claim-item-title">{{ claim.item.title }}</h3>
+            <p class="claim-item-location">
+                <i class="fas fa-map-marker-alt"></i>
+                {{ claim.item.location|default:"Not specified" }}
+            </p>
+            
+            <div class="claim-message">
+                <h4>Your Message:</h4>
+                <p>{{ claim.message }}</p>
+            </div>
+            
+            <a href="{% url 'items:item_detail' claim.item.id %}" class="btn btn-primary">
+                <i class="fas fa-eye"></i> View Item
+            </a>
         </div>
-        {% endif %}
-
-      </div><!-- /row -->
-    </div><!-- /card-body -->
-
-  </div><!-- /claim-card -->
-
-  {% empty %}
-
-  <div class="empty-state">
-    <i class="fas fa-inbox"></i>
-    <p>No claim requests found.</p>
-  </div>
-
-  {% endfor %}
-
-</div><!-- /container -->
-
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <p class="empty-message">No Claims Yet</p>
+        <p class="empty-suggestion">You haven't submitted any claims yet. Browse lost items and claim what belongs to you!</p>
+        <a href="{% url 'items:home' %}" class="btn btn-primary">
+            <i class="fas fa-search"></i> Browse Items
+        </a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
