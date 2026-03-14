@@ -434,6 +434,7 @@
               <div class="claim-info">
                 <h4>{{ claim.item.title }}</h4>
                 <p>By {{ claim.claimant.username }} • {{ claim.created_at|timesince }} ago</p>
+                <p style="margin-top: 4px; color: #aaa;">{{ claim.message|truncatechars:80 }}</p>
               </div>
               <div class="claim-actions">
                 <form method="post" action="{% url 'claim:accept_claim' claim.id %}" style="display:inline;">

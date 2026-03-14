@@ -21,6 +21,10 @@ def home(request):
 
 @login_required
 def add_item(request):
+    if not request.user.is_institution_admin:
+        messages.error(request, "You don't have permission to add items.")
+        return redirect('items:home')
+    
     if not request.user.institution:
         messages.error(request, "Please select an institution in your profile.")
         return redirect('items:home')
@@ -46,7 +50,7 @@ def add_item(request):
             institution=request.user.institution
         )
         messages.success(request, f'{item_type} item "{title}" has been added successfully!')
-        return redirect('home')
+        return redirect('items:home')
     
     return render(request, "add_item.html")
 

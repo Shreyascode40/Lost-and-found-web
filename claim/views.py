@@ -23,7 +23,7 @@ def create_claim(request, item_id):
     #  Cannot claim your own item
     if item.user == request.user:
         messages.error(request, "You cannot claim your own item.")
-        return redirect('home')
+        return redirect('items:home')
 
     # Cannot claim from another institution
     if item.institution != request.user.institution:
@@ -44,7 +44,7 @@ def create_claim(request, item_id):
 
         if not message:
             messages.error(request, "Please enter a message.")
-            return redirect('create_claim', item_id=item.id)
+            return redirect('claim:create_claim', item_id=item.id)
 
         Claim.objects.create(
             item=item,
@@ -103,7 +103,7 @@ def accept_claim(request, claim_id):
 
     messages.success(request, "Claim accepted and item handed over successfully.")
 
-    return redirect('admin_dashboard')
+    return redirect('admin_panel:admin_dashboard')
 
 
 
@@ -121,4 +121,4 @@ def reject_claim(request, claim_id):
 
     messages.info(request, "Claim rejected.")
 
-    return redirect('owner_claims')
+    return redirect('claim:owner_claims')

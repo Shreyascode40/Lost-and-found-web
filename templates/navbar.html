@@ -7,17 +7,14 @@
         </a>
         
         <div class="navbar-left">
-            {% if user.is_authenticated %}
-                <a href="{% url 'items:home' %}" class="navbar-link">
-                    <i class="fas fa-home"></i> Home
-                </a>
+            {% if user.is_authenticated and user.is_institution_admin %}
                 <a href="{% url 'items:add_item' %}" class="navbar-link navbar-link--primary">
                     <i class="fas fa-plus"></i> Add Item
                 </a>
-                <a href="{% url 'claim:claim_list' %}" class="navbar-link">
-                    <i class="fas fa-clipboard-list"></i> My Claims
-                </a>
             {% endif %}
+            <a href="{% url 'claim:claim_list' %}" class="navbar-link">
+                <i class="fas fa-clipboard-list"></i> My Claims
+            </a>
         </div>
         
         <div class="navbar-right">
@@ -25,9 +22,6 @@
                 <span class="navbar-username">
                     <i class="fas fa-user"></i> {{ user.username }}
                 </span>
-                <a href="{% url 'admin_panel:admin_dashboard' %}" class="navbar-link">
-                    <i class="fas fa-cog"></i> Admin
-                </a>
                 <a href="{% url 'accounts:logout' %}" class="navbar-link navbar-link--danger">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>

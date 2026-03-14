@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Institution Admin Login</title>
+    <title>Institution Admin Register</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -179,35 +179,20 @@
             text-decoration: underline;
         }
 
-        .register-box {
-            background: rgba(124, 109, 250, 0.1);
-            border: 1px solid rgba(124, 109, 250, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            margin-top: 10px;
+        .input-icon {
+            position: relative;
         }
 
-        .register-box p {
-            color: #a0a0b8;
-            font-size: 0.85rem;
-            margin-bottom: 12px;
+        .input-icon i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b6b80;
         }
 
-        .register-box a {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #7c6dfa;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .register-box a:hover {
-            color: #9d8fff;
-            transform: translateX(4px);
+        .input-icon .form-control {
+            padding-left: 42px;
         }
     </style>
 </head>
@@ -218,10 +203,10 @@
         <div class="auth-card">
             <div class="auth-header">
                 <div class="auth-logo">
-                    <i class="fas fa-user-shield"></i>
+                    <i class="fas fa-university"></i>
                 </div>
-                <h1>Admin Login</h1>
-                <p>Access your institution dashboard</p>
+                <h1>Register Institution</h1>
+                <p>Create your institution admin account</p>
             </div>
 
             {% if error %}
@@ -235,12 +220,23 @@
 
                 <div class="form-group">
                     <label>
-                        <i class="fas fa-user"></i> Username
+                        <i class="fas fa-university"></i> Institution Name
+                    </label>
+                    <input type="text" 
+                           name="institution_name" 
+                           class="form-control" 
+                           placeholder="Enter institution name" 
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-user"></i> Admin Username
                     </label>
                     <input type="text" 
                            name="username" 
                            class="form-control" 
-                           placeholder="Enter username" 
+                           placeholder="Choose admin username" 
                            required>
                 </div>
 
@@ -251,25 +247,29 @@
                     <input type="password" 
                            name="password" 
                            class="form-control" 
-                           placeholder="Enter password" 
+                           placeholder="Create password" 
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-lock"></i> Confirm Password
+                    </label>
+                    <input type="password" 
+                           name="confirm_password" 
+                           class="form-control" 
+                           placeholder="Confirm password" 
                            required>
                 </div>
 
                 <button type="submit" class="btn-primary">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Login as Admin
+                    <i class="fas fa-user-plus"></i>
+                    Create Admin Account
                 </button>
             </form>
 
-            <div class="register-box">
-                <p>Is your institution not registered yet?</p>
-                <a href="{% url 'institution:admin_register' %}">
-                    <i class="fas fa-plus-circle"></i> Register Your Institution
-                </a>
-            </div>
-
             <div class="auth-footer">
-                <p>Not an admin? <a href="{% url 'accounts:login' %}">Student Login</a></p>
+                <p>Already have an account? <a href="{% url 'admin_panel:admin_login' %}">Login here</a></p>
             </div>
         </div>
     </div>
