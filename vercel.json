@@ -2,18 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "lostfound_project/wsgi.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb",
-        "runtime": "python3.12"
-      }
+      "src": "app.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "your_project_name/wsgi.py"
+      "dest": "app.py"
     }
   ]
 }
+```
