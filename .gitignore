@@ -26,3 +26,9 @@ db.sqlite3-journal
 # OS
 .DS_Store
 Thumbs.db
+
+# Uploaded files
+items/*.jpg
+items/*.jpeg
+items/*.png
+items/*.gif
