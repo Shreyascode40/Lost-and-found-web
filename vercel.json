@@ -2,18 +2,8 @@
   "version": 2,
   "builds": [
     {
-      "src": "requirements.txt",
-      "use": "@vercel/python"
-    },
-    {
       "src": "lostfound_project/wsgi.py",
       "use": "vercel-python-wsgi"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "lostfound_project/wsgi.py"
     }
   ]
 }
