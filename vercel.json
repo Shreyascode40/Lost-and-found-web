@@ -2,8 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "lostfound_project/wsgi.py",
+      "src": "app.py",
       "use": "vercel-python-wsgi"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app.py"
     }
   ]
 }
