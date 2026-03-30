@@ -13,18 +13,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-elm+#fs#7xo$%^9mp*4fb1^7v3e1p=9%@rg4!2b65p-t_#*s3t')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-elm+#fs#7xo$%^9mp*4fb1^7v3e1p=9%@rg4!2b65p-t_#*s3t'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
@@ -79,16 +72,22 @@ WSGI_APPLICATION = 'lostfound_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lostfound_db',
-        'USER': 'postgres',
-        'PASSWORD': '311237',
-        'HOST': 'localhost',
-        'PORT': '5432',
+if os.environ.get('DATABASE_URL'):
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'lostfound_db',
+            'USER': 'postgres',
+            'PASSWORD': '311237',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 
 
 # Password validation
@@ -130,6 +129,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
