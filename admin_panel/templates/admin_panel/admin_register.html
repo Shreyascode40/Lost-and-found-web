@@ -194,6 +194,23 @@
         .input-icon .form-control {
             padding-left: 42px;
         }
+
+        @media (max-width: 768px) {
+            body { padding: 16px; }
+            .auth-card { padding: 28px 24px; }
+            .auth-header h1 { font-size: 1.3rem; }
+            .auth-header p { font-size: 0.85rem; }
+            .form-control { padding: 12px 14px; font-size: 0.9rem; }
+            .btn-primary { padding: 12px; font-size: 0.9rem; }
+            .auth-logo { width: 56px; height: 56px; font-size: 22px; }
+        }
+
+        @media (max-width: 480px) {
+            .auth-card { padding: 20px 16px; border-radius: 14px; }
+            .auth-header h1 { font-size: 1.1rem; }
+            .form-group { margin-bottom: 14px; }
+            .form-group label { font-size: 0.8rem; }
+        }
     </style>
 </head>
 
