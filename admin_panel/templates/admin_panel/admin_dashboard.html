@@ -141,10 +141,10 @@
 
     .btn-primary {
       background: var(--accent);
-;
+      color: white;
     }
 
-    .btn-primary:hover      color: white {
+    .btn-primary:hover {
       background: #6a5cf0;
       transform: translateY(-2px);
     }
@@ -344,17 +344,17 @@
         </a>
       </li>
       <li>
-        <a href="/add/">
+        <a href="{% url 'items:add_item' %}">
           <i class="fas fa-plus-circle"></i> Add Item
         </a>
       </li>
       <li>
-        <a href="/">
+        <a href="{% url 'items:home' %}">
           <i class="fas fa-search"></i> View All Items
         </a>
       </li>
       <li>
-        <a href="/claim/list/">
+        <a href="{% url 'claim:claim_list' %}">
           <i class="fas fa-clipboard-list"></i> All Claims
         </a>
       </li>
@@ -369,7 +369,7 @@
         </a>
       </li>
       <li class="logout">
-        <a href="/accounts/logout/">
+        <a href="{% url 'accounts:logout' %}">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -383,7 +383,7 @@
         <p>Welcome back — here's what's happening today.</p>
       </div>
       <div class="header-actions">
-        <a href="/add/" class="btn btn-primary">
+        <a href="{% url 'items:add_item' %}" class="btn btn-primary">
           <i class="fas fa-plus"></i> Add Item
         </a>
       </div>

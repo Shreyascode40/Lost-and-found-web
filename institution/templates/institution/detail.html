@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ institution.name }} - Lost & Found{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-heading">
+            <i class="fas fa-university"></i> {{ institution.name }}
+        </h1>
+        <p class="page-subtitle">Lost items in this institution</p>
+    </div>
+
+    <div class="items-grid">
+        {% for item in items %}
+        <div class="item-card">
+            <div class="image-wrapper">
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
+                {% else %}
+                    <div class="no-image-placeholder">
+                        <span>📦</span>
+                        <p>No Image</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="item-content">
+                <span class="item-type-badge badge-lost">{{ item.item_type }}</span>
+                <h3 class="item-title">{{ item.title }}</h3>
+                <p class="item-description">{{ item.description|truncatewords:15 }}</p>
+
+                <div class="item-meta">
+                    <span class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i> {{ item.location|default:"Not specified" }}
+                    </span>
+                    <span class="meta-item">
+                        <i class="fas fa-calendar"></i> {{ item.date|default:"Not specified" }}
+                    </span>
+                </div>
+
+                <a href="{% url 'items:item_detail' item.id %}" class="btn btn-primary">
+                    <i class="fas fa-eye"></i> View
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-icon">🔍</div>
+            <p class="empty-message">No lost items found</p>
+            <p class="empty-suggestion">No items have been reported yet in this institution.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

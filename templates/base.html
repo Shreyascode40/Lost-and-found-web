@@ -14,7 +14,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    {% include 'navbar.html' %}
+    {% block navbar %}{% include 'navbar.html' %}{% endblock %}
     {% block content %}{% endblock %}
     {% block extra_js %}{% endblock %}
 </body>

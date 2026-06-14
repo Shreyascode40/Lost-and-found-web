@@ -110,15 +110,22 @@ def accept_claim(request, claim_id):
 
 @login_required
 def reject_claim(request, claim_id):
+    if request.method != "POST":
+        return HttpResponseForbidden()
+
     claim = get_object_or_404(Claim, id=claim_id)
 
-    #  Only owner can reject
-    if claim.item.user != request.user:
+    #  Only owner or institution admin can reject
+    if claim.item.user != request.user and not request.user.is_institution_admin:
         return HttpResponseForbidden("Access Denied")
+
+    #  Must be same institution
+    if claim.item.institution != request.user.institution:
+        return HttpResponseForbidden("Wrong Institution")
 
     claim.status = "Rejected"
     claim.save()
 
     messages.info(request, "Claim rejected.")
 
-    return redirect('claim:owner_claims')
+    return redirect('admin_panel:admin_dashboard')

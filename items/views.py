@@ -15,6 +15,10 @@ def home(request):
         is_active=True
     ).order_by('-created_at')
     
+    q = request.GET.get('q')
+    if q:
+        items = items.filter(title__icontains=q) | items.filter(description__icontains=q)
+    
     return render(request, "home.html", {
         "items": items
     })
@@ -63,6 +67,11 @@ def lost_items(request):
             institution=request.user.institution,
             item_type='Lost'
         ).order_by('-id')
+    
+    q = request.GET.get('q')
+    if q:
+        items = items.filter(title__icontains=q) | items.filter(description__icontains=q)
+    
     return render(request, 'lost_items.html', {'items': items})
 
 

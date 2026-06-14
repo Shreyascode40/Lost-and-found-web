@@ -51,6 +51,9 @@ def admin_dashboard(request):
 
 def admin_login(request):
 
+    if request.user.is_authenticated and request.user.is_institution_admin:
+        return redirect("admin_panel:admin_dashboard")
+
     if request.method == "POST":
 
         username = request.POST.get("username")

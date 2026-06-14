@@ -9,6 +9,8 @@ from .models import CustomUser
 
 
 def register_view(request):
+    institutions = Institution.objects.all()
+
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -18,24 +20,28 @@ def register_view(request):
 
         if password != confirm_password:
             return render(request, "accounts/register.html", {
-                "error": "Passwords do not match"
+                "error": "Passwords do not match",
+                "institutions": institutions,
             })
 
         if not institution_id:
             return render(request, "accounts/register.html", {
-                "error": "Please select an institution"
+                "error": "Please select an institution",
+                "institutions": institutions,
             })
 
         try:
             institution = Institution.objects.get(id=institution_id)
         except Institution.DoesNotExist:
             return render(request, "accounts/register.html", {
-                "error": "Invalid institution selected"
+                "error": "Invalid institution selected",
+                "institutions": institutions,
             })
 
         if not check_password(join_password, institution.join_password):
             return render(request, "accounts/register.html", {
-                "error": "Invalid Institution Password"
+                "error": "Invalid Institution Password",
+                "institutions": institutions,
             })
 
         user = CustomUser.objects.create_user(
@@ -45,8 +51,6 @@ def register_view(request):
         )
 
         return redirect("accounts:login")
-
-    institutions = Institution.objects.all()
 
     return render(request, "accounts/register.html", {
         "institutions": institutions
