@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f13;
+      --surface: #17171f;
+      --border: #2a2a38;
+      --accent: #7c6dfa;
+      --accent2: #f7a046;
+      --accent3: #4ecdc4;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --danger: #ff6b6b;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* NAV */
+    nav {
+      width: 220px;
+      min-height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.2rem;
+      flex-shrink: 0;
+    }
+
+    nav .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+
+    nav ul li a {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    nav ul li a:hover {
+      background: rgba(124, 109, 250, 0.12);
+      color: var(--accent);
+    }
+
+    nav ul li.active a {
+      background: rgba(124, 109, 250, 0.18);
+      color: var(--accent);
+    }
+
+    nav ul li.logout { margin-top: auto; }
+    nav ul li.logout a { color: var(--danger); }
+    nav ul li.logout a:hover { background: rgba(255, 107, 107, 0.12); }
+
+    /* MAIN */
+    #main {
+      flex: 1;
+      padding: 2.5rem;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .page-header p {
+      color: var(--muted);
+      font-size: 0.875rem;
+      margin-top: 0.3rem;
+    }
+
+    /* STAT CARDS */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .dashboard > div {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard > div::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 14px 14px 0 0;
+    }
+
+    #total::before   { background: var(--accent); }
+    #claimed::before { background: var(--accent3); }
+    #pending::before { background: var(--accent2); }
+
+    .dashboard h3 {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.8rem;
+    }
+
+    .dashboard h2 {
+      font-family: 'DM Mono', monospace;
+      font-size: 2.8rem;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    #total h2   { color: var(--accent); }
+    #claimed h2 { color: var(--accent3); }
+    #pending h2 { color: var(--accent2); }
+
+    /* GRAPH */
+    .graph {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem;
+    }
+
+    .graph-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .graph-header h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .legend {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .legend-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 280px;
+    }
+
+    @media (max-width: 900px) {
+      body { flex-direction: column; }
+      nav { width: 100%; min-height: auto; flex-direction: row; flex-wrap: wrap; padding: 1rem; }
+      nav ul { flex-direction: row; flex-wrap: wrap; }
+      .dashboard { grid-template-columns: 1fr; }
+    }
